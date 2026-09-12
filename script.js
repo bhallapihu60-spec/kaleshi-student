@@ -1,235 +1,250 @@
-/* =========================================================
-   KALESHI — STUDENT DASHBOARD
-   Main JavaScript
-   ========================================================= */
+/* =================================================
+   KALESHI — MAIN SCRIPT
+   ================================================= */
 
 
-/* =========================================================
-   1. THEME
-   ========================================================= */
+/* =================================================
+   PAGE LOAD
+   ================================================= */
 
-const themeButton =
-    document.getElementById("themeButton");
+document.addEventListener("DOMContentLoaded", function () {
 
-function loadTheme() {
+    updateToday();
 
-    const savedTheme =
-        localStorage.getItem("kaleshiTheme");
+    updateDashboardStats();
 
-    if (savedTheme === "light") {
-        document.body.classList.add("light-mode");
+    loadTheme();
 
-        if (themeButton) {
-            themeButton.textContent = "☀";
-        }
-    }
-
-}
-
-function toggleTheme() {
-
-    document.body.classList.toggle("light-mode");
-
-    const isLight =
-        document.body.classList.contains("light-mode");
-
-    localStorage.setItem(
-        "kaleshiTheme",
-        isLight ? "light" : "dark"
-    );
-
-    if (themeButton) {
-
-        themeButton.textContent =
-            isLight ? "☀" : "☾";
-
-    }
-}
-
-if (themeButton) {
-
-    themeButton.addEventListener(
-        "click",
-        toggleTheme
-    );
-
-}
+});
 
 
-/* =========================================================
-   2. TODAY'S DATE
-   ========================================================= */
+/* =================================================
+   TODAY'S DATE
+   ================================================= */
 
-function updateDate() {
+function updateToday() {
 
     const today = new Date();
 
-    const day =
-        today.getDate();
 
-    const month =
-        today.toLocaleDateString(
-            "en-US",
-            {
-                month: "long"
-            }
-        );
-
-    const weekday =
-        today.toLocaleDateString(
-            "en-US",
-            {
-                weekday: "long"
-            }
-        );
-
+    /* ---------------------------------------------
+       HERO DAY
+       --------------------------------------------- */
 
     const heroDay =
         document.getElementById("heroDay");
 
+    if (heroDay) {
+
+        heroDay.textContent =
+            today.getDate();
+
+    }
+
+
+    /* ---------------------------------------------
+       HERO MONTH
+       --------------------------------------------- */
+
     const heroMonth =
         document.getElementById("heroMonth");
+
+    if (heroMonth) {
+
+        heroMonth.textContent =
+            today.toLocaleDateString(
+                "en-US",
+                {
+                    month: "long"
+                }
+            ).toUpperCase();
+
+    }
+
+
+    /* ---------------------------------------------
+       HERO WEEKDAY
+       --------------------------------------------- */
 
     const heroWeekday =
         document.getElementById("heroWeekday");
 
-
-    if (heroDay) {
-        heroDay.textContent =
-            String(day).padStart(2, "0");
-    }
-
-    if (heroMonth) {
-        heroMonth.textContent =
-            month.toUpperCase();
-    }
-
     if (heroWeekday) {
+
         heroWeekday.textContent =
-            weekday.toUpperCase();
+            today.toLocaleDateString(
+                "en-US",
+                {
+                    weekday: "long"
+                }
+            ).toUpperCase();
+
+    }
+
+
+    /* ---------------------------------------------
+       TODAY STAT
+       --------------------------------------------- */
+
+    const todayStat =
+        document.getElementById("todayStat");
+
+    if (todayStat) {
+
+        todayStat.textContent =
+            today.toLocaleDateString(
+                "en-US",
+                {
+                    month: "short",
+                    day: "numeric"
+                }
+            );
+
     }
 
 }
 
 
-/* =========================================================
-   3. DASHBOARD STATS
-   ========================================================= */
+/* =================================================
+   DASHBOARD STATISTICS
+   ================================================= */
 
 function updateDashboardStats() {
 
-    /*
-       Tasks are stored by the To-Do page
-       inside localStorage.
-    */
 
-    let tasks = [];
-
-    try {
-
-        tasks =
-            JSON.parse(
-                localStorage.getItem(
-                    "studentTasks"
-                )
-            ) || [];
-
-    } catch (error) {
-
-        tasks = [];
-
-    }
-
-
-    const completedTasks =
-        tasks.filter(
-            task => task.completed
-        ).length;
-
-
-    const taskCount =
-        document.getElementById(
-            "taskCount"
-        );
-
-
-    if (taskCount) {
-
-        taskCount.textContent =
-            completedTasks;
-
-    }
-
-
-    /*
-       Notes are stored by the Notes page.
-       We support a few possible storage names
-       so the dashboard remains compatible
-       with the notes system we build later.
-    */
-
-    let notes = [];
-
-    try {
-
-        notes =
-            JSON.parse(
-                localStorage.getItem(
-                    "kaleshiNotes"
-                )
-            ) || [];
-
-    } catch (error) {
-
-        notes = [];
-
-    }
-
+    /* ---------------------------------------------
+       NOTES COUNT
+       --------------------------------------------- */
 
     const noteCount =
-        document.getElementById(
-            "noteCount"
-        );
+        document.getElementById("noteCount");
 
 
     if (noteCount) {
 
+        let notes = [];
+
+        try {
+
+            notes =
+                JSON.parse(
+                    localStorage.getItem(
+                        "kaleshiNotes"
+                    )
+                ) || [];
+
+        } catch (error) {
+
+            notes = [];
+
+        }
+
+
         noteCount.textContent =
-            Array.isArray(notes)
-                ? notes.length
-                : 0;
+            notes.length;
+
+    }
+
+
+    /* ---------------------------------------------
+       TASK COUNT
+       --------------------------------------------- */
+
+    const taskCount =
+        document.getElementById("taskCount");
+
+
+    if (taskCount) {
+
+        let tasks = [];
+
+        try {
+
+            tasks =
+                JSON.parse(
+                    localStorage.getItem(
+                        "kaleshiTasks"
+                    )
+                ) || [];
+
+        } catch (error) {
+
+            tasks = [];
+
+        }
+
+
+        /* Show completed tasks */
+
+        const completed =
+            tasks.filter(
+                task => task.completed
+            ).length;
+
+
+        taskCount.textContent =
+            completed;
 
     }
 
 }
 
 
-/* =========================================================
-   4. NAVIGATION
-   ========================================================= */
+/* =================================================
+   REFRESH DASHBOARD STATS
+   ================================================= */
+
+window.addEventListener(
+    "storage",
+    function () {
+
+        updateDashboardStats();
+
+    }
+);
+
+
+/* =================================================
+   OPEN TOOL
+   ================================================= */
 
 function openTool(tool) {
 
-    const pages = {
-
-        notes: "notes.html",
-
-        todo: "todo.html",
-
-        calendar: "calendar.html"
-
-    };
-
-
-    if (pages[tool]) {
+    if (tool === "notes") {
 
         window.location.href =
-            pages[tool];
+            "notes.html";
+
+        return;
+
+    }
+
+
+    if (tool === "todo") {
+
+        window.location.href =
+            "todo.html";
+
+        return;
+
+    }
+
+
+    if (tool === "calendar") {
+
+        window.location.href =
+            "calendar.html";
+
+        return;
 
     }
 
 }
 
+
+/* =================================================
+   HOME
+   ================================================= */
 
 function goHome() {
 
@@ -239,9 +254,9 @@ function goHome() {
 }
 
 
-/* =========================================================
-   5. SCROLL TO TOOLS
-   ========================================================= */
+/* =================================================
+   SCROLL TO TOOLS
+   ================================================= */
 
 function scrollToTools() {
 
@@ -250,43 +265,142 @@ function scrollToTools() {
             "tools"
         );
 
-    if (!tools) return;
 
-    tools.scrollIntoView({
-        behavior: "smooth",
-        block: "start"
-    });
+    if (tools) {
+
+        tools.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+
+    }
 
 }
 
 
-/* =========================================================
-   6. PAGE START
-   ========================================================= */
+/* =================================================
+   THEME
+   ================================================= */
 
-document.addEventListener(
-    "DOMContentLoaded",
-    function () {
+function toggleTheme() {
 
-        loadTheme();
+    const body =
+        document.body;
 
-        updateDate();
 
-        updateDashboardStats();
+    body.classList.toggle(
+        "light-mode"
+    );
+
+
+    const isLight =
+        body.classList.contains(
+            "light-mode"
+        );
+
+
+    localStorage.setItem(
+        "kaleshiTheme",
+        isLight
+            ? "light"
+            : "dark"
+    );
+
+
+    updateThemeButton();
+
+}
+
+
+/* =================================================
+   LOAD THEME
+   ================================================= */
+
+function loadTheme() {
+
+    const savedTheme =
+        localStorage.getItem(
+            "kaleshiTheme"
+        );
+
+
+    if (savedTheme === "light") {
+
+        document.body.classList.add(
+            "light-mode"
+        );
 
     }
-);
 
 
-/* =========================================================
-   7. UPDATE STATS WHEN RETURNING
-   ========================================================= */
+    updateThemeButton();
 
-window.addEventListener(
-    "pageshow",
-    function () {
+}
 
-        updateDashboardStats();
+
+/* =================================================
+   THEME BUTTON TEXT
+   ================================================= */
+
+function updateThemeButton() {
+
+    const themeButton =
+        document.getElementById(
+            "themeButton"
+        );
+
+
+    if (!themeButton) return;
+
+
+    const isLight =
+        document.body.classList.contains(
+            "light-mode"
+        );
+
+
+    if (isLight) {
+
+        themeButton.textContent =
+            "☾";
+
+        themeButton.setAttribute(
+            "aria-label",
+            "Switch to dark mode"
+        );
+
+    } else {
+
+        themeButton.textContent =
+            "☀";
+
+        themeButton.setAttribute(
+            "aria-label",
+            "Switch to light mode"
+        );
 
     }
-);
+
+}
+
+
+/* =================================================
+   MAKE FUNCTIONS AVAILABLE TO HTML
+   ================================================= */
+
+window.openTool =
+    openTool;
+
+window.goHome =
+    goHome;
+
+window.scrollToTools =
+    scrollToTools;
+
+window.toggleTheme =
+    toggleTheme;
+
+
+/* =================================================
+   KALESHI
+   ================================================= */
