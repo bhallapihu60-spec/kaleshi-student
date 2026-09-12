@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
 
@@ -10,566 +11,645 @@
 
     <meta
         name="theme-color"
-        content="#16070d"
+        content="#10050a"
     >
 
     <meta
         name="description"
-        content="KALESHI — a bold student life dashboard"
+        content="KALESHI Student Dashboard — notes, tasks and calendar"
     >
 
     <title>KALESHI — Student Dashboard</title>
 
+    <!-- Main stylesheet -->
     <link
         rel="stylesheet"
         href="style.css"
     >
+
+    <!-- PWA Manifest -->
+    <link
+        rel="manifest"
+        href="manifest.json"
+    >
+
+    <!-- App icon -->
+    <link
+        rel="icon"
+        type="image/png"
+        href="icon.png"
+    >
 </head>
+
 
 <body>
 
-    <!-- ============================= -->
-    <!-- BACKGROUND DECORATIONS -->
-    <!-- ============================= -->
 
-    <div class="background-decor decor-one"></div>
-    <div class="background-decor decor-two"></div>
+    <!-- =========================================
+         BACKGROUND DECORATIONS
+         ========================================= -->
 
-    <div class="sticker sticker-cherry">🍒</div>
-    <div class="sticker sticker-star">✦</div>
-    <div class="sticker sticker-bow">🎀</div>
+    <div class="bg-decoration bg-circle circle-one"></div>
+
+    <div class="bg-decoration bg-circle circle-two"></div>
+
+    <div class="sticker sticker-cherry">
+        🍒
+    </div>
+
+    <div class="sticker sticker-lips">
+        💋
+    </div>
+
+    <div class="sticker sticker-bow">
+        🎀
+    </div>
+
+    <div class="sticker sticker-star">
+        ✦
+    </div>
+
+    <div class="sticker sticker-star-two">
+        ✧
+    </div>
 
 
-    <!-- ============================= -->
-    <!-- MAIN APP -->
-    <!-- ============================= -->
+    <!-- =========================================
+         TOP BAR
+         ========================================= -->
 
-    <div class="app-shell">
+    <header class="topbar">
+
+        <div class="brand">
+
+            <span class="brand-small">
+                MY
+            </span>
+
+            <span class="brand-main">
+                KALESHI
+            </span>
+
+        </div>
 
 
-        <!-- ============================= -->
-        <!-- TOP BAR -->
-        <!-- ============================= -->
+        <button
+            id="themeButton"
+            class="theme-button"
+            onclick="toggleTheme()"
+            type="button"
+            aria-label="Switch to light mode"
+        >
+            ☀
+        </button>
 
-        <header class="topbar">
+    </header>
 
-            <div class="brand">
 
-                <div class="brand-mark">
-                    K
-                </div>
 
-                <div class="brand-text">
+    <!-- =========================================
+         MAIN CONTENT
+         ========================================= -->
 
-                    <span class="brand-small">
-                        STUDENT LIFE
+    <main>
+
+
+        <!-- =====================================
+             HERO SECTION
+             ===================================== -->
+
+        <section class="hero-section">
+
+            <div class="hero-text">
+
+                <p class="eyebrow">
+                    STUDENT DASHBOARD
+                </p>
+
+                <h1>
+                    KALESHI
+                    <br>
+                    MODE:
+                    <span>ON.</span>
+                </h1>
+
+                <p class="hero-description">
+                    Study smart. Stay organised.
+                    Get things done.
+                </p>
+
+
+                <button
+                    class="hero-button"
+                    type="button"
+                    onclick="scrollToTools()"
+                >
+                    ENTER MY DASHBOARD
+                    <span>→</span>
+                </button>
+
+            </div>
+
+
+
+            <!-- =================================
+                 TODAY CARD
+                 ================================= -->
+
+            <div class="today-card">
+
+                <div class="today-card-top">
+
+                    <span class="today-label">
+                        TODAY'S
                     </span>
 
-                    <h1>
-                        KALESHI
-                    </h1>
+                    <span class="today-star">
+                        ✦
+                    </span>
+
+                </div>
+
+
+                <div class="today-content">
+
+                    <div
+                        class="today-day"
+                        id="heroDay"
+                    >
+                        --
+                    </div>
+
+
+                    <div class="today-info">
+
+                        <div
+                            class="today-month"
+                            id="heroMonth"
+                        >
+                            MONTH
+                        </div>
+
+                        <div
+                            class="today-weekday"
+                            id="heroWeekday"
+                        >
+                            DAY
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="today-bottom">
+
+                    <span>
+                        MAIN CHARACTER ENERGY
+                    </span>
+
+                    <span>
+                        🍒
+                    </span>
 
                 </div>
 
             </div>
 
-
-            <button
-                class="theme-button"
-                id="themeButton"
-                type="button"
-                aria-label="Toggle dark mode"
-            >
-                ☾
-            </button>
-
-        </header>
+        </section>
 
 
 
-        <!-- ============================= -->
-        <!-- HERO -->
-        <!-- ============================= -->
+        <!-- =====================================
+             STATS
+             ===================================== -->
 
-        <main>
+        <section class="stats-section">
 
-            <section class="hero-section">
 
-                <div class="hero-copy">
+            <div class="stat-card">
 
-                    <div class="mini-label">
-                        ✦ KALESHI MODE: ON ✦
-                    </div>
+                <span class="stat-number">
+                    <span id="taskCount">
+                        0
+                    </span>
+                </span>
 
-                    <h2>
-                        Main character
-                        <span>study mode.</span>
-                    </h2>
+                <span class="stat-label">
+                    TASKS DONE
+                </span>
 
-                    <p>
-                        Your notes, tasks and plans —
-                        all in one chaotic little space.
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <span class="stat-number">
+                    <span id="noteCount">
+                        0
+                    </span>
+                </span>
+
+                <span class="stat-label">
+                    NOTES
+                </span>
+
+            </div>
+
+
+
+            <div class="stat-card">
+
+                <span
+                    class="stat-number stat-date"
+                    id="todayStat"
+                >
+                    --
+                </span>
+
+                <span class="stat-label">
+                    TODAY
+                </span>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================
+             TOOLS SECTION
+             ===================================== -->
+
+        <section
+            class="tools-section"
+            id="tools"
+        >
+
+
+            <div class="section-heading">
+
+                <div>
+
+                    <p class="section-kicker">
+                        YOUR SPACE
                     </p>
 
-                    <button
-                        class="hero-button"
-                        type="button"
-                        onclick="scrollToTools()"
-                    >
-                        ENTER MY SPACE
-                        <span>→</span>
-                    </button>
+                    <h2>
+                        GET
+                        <span>IT</span>
+                        DONE.
+                    </h2>
 
                 </div>
 
+                <div class="heading-sticker">
+                    ✦
+                </div>
 
-                <!-- HERO CARD -->
+            </div>
 
-                <div class="hero-card">
 
-                    <div class="hero-card-top">
 
-                        <span>
-                            TODAY'S KALESHI
+            <!-- =================================
+                 TOOL GRID
+                 ================================= -->
+
+            <div class="tools-grid">
+
+
+                <!-- =================================
+                     NOTES
+                     ================================= -->
+
+                <article
+                    class="tool-card notes-card"
+                    onclick="openTool('notes')"
+                    role="button"
+                    tabindex="0"
+                    onkeydown="if(event.key === 'Enter') openTool('notes')"
+                >
+
+                    <div class="tool-card-top">
+
+                        <span class="tool-number">
+                            01
                         </span>
 
-                        <span class="sparkle">
-                            ✦
+                        <span class="tool-icon">
+                            📝
                         </span>
 
                     </div>
 
 
-                    <div class="hero-date">
+                    <div class="tool-card-content">
 
-                        <div
-                            class="date-number"
-                            id="heroDay"
-                        >
-                            12
-                        </div>
-
-                        <div class="date-info">
-
-                            <strong id="heroMonth">
-                                SEPTEMBER
-                            </strong>
-
-                            <span id="heroWeekday">
-                                SATURDAY
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="hero-divider"></div>
-
-
-                    <div class="hero-message">
-
-                        <span class="lip-sticker">
-                            💋
-                        </span>
-
-                        <p>
-                            Get your stuff together,
-                            babe.
+                        <p class="tool-mini">
+                            WRITE IT DOWN
                         </p>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- ============================= -->
-            <!-- QUICK STATS -->
-            <!-- ============================= -->
-
-            <section class="stats-section">
-
-                <div class="section-label">
-                    YOUR LITTLE CHECK-IN
-                </div>
-
-
-                <div class="stats-grid">
-
-
-                    <div class="stat-card">
-
-                        <div class="stat-icon">
-                            ☑
-                        </div>
-
-                        <div class="stat-info">
-
-                            <span>
-                                TASKS DONE
-                            </span>
-
-                            <strong id="taskCount">
-                                0
-                            </strong>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="stat-card">
-
-                        <div class="stat-icon">
-                            ♡
-                        </div>
-
-                        <div class="stat-info">
-
-                            <span>
-                                NOTES
-                            </span>
-
-                            <strong id="noteCount">
-                                0
-                            </strong>
-
-                        </div>
-
-                    </div>
-
-
-                    <div class="stat-card">
-
-                        <div class="stat-icon">
-                            ✦
-                        </div>
-
-                        <div class="stat-info">
-
-                            <span>
-                                TODAY
-                            </span>
-
-                            <strong>
-                                GO
-                            </strong>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </section>
-
-
-
-            <!-- ============================= -->
-            <!-- TOOLS -->
-            <!-- ============================= -->
-
-            <section
-                class="tools-section"
-                id="tools"
-            >
-
-                <div class="tools-heading">
-
-                    <div>
-
-                        <div class="section-label">
-                            THE ESSENTIALS
-                        </div>
-
-                        <h2>
-                            Pick your poison.
-                        </h2>
-
-                    </div>
-
-                    <div class="chrome-star">
-                        ★
-                    </div>
-
-                </div>
-
-
-
-                <div class="tools-grid">
-
-
-                    <!-- NOTES -->
-
-                    <button
-                        class="tool-card notes-card"
-                        type="button"
-                        onclick="openTool('notes')"
-                    >
-
-                        <div class="tool-card-header">
-
-                            <span class="tool-number">
-                                01
-                            </span>
-
-                            <span class="tool-arrow">
-                                ↗
-                            </span>
-
-                        </div>
-
-
-                        <div class="tool-icon-large">
-                            ♡
-                        </div>
-
 
                         <h3>
                             NOTES
                         </h3>
 
                         <p>
-                            Brain dump everything
-                            before it disappears.
+                            Save your ideas,
+                            class notes and
+                            random genius moments.
                         </p>
 
-
-                        <div class="tool-sticker">
-                            WRITE IT DOWN
-                        </div>
-
-                    </button>
+                    </div>
 
 
+                    <div class="tool-card-bottom">
 
-                    <!-- TODO -->
+                        <span>
+                            OPEN NOTES
+                        </span>
 
-                    <button
-                        class="tool-card todo-card"
-                        type="button"
-                        onclick="openTool('todo')"
-                    >
+                        <span class="arrow">
+                            ↗
+                        </span>
 
-                        <div class="tool-card-header">
+                    </div>
 
-                            <span class="tool-number">
-                                02
-                            </span>
-
-                            <span class="tool-arrow">
-                                ↗
-                            </span>
-
-                        </div>
+                </article>
 
 
-                        <div class="tool-icon-large">
-                            ✓
-                        </div>
 
+                <!-- =================================
+                     TO-DO
+                     ================================= -->
+
+                <article
+                    class="tool-card todo-card"
+                    onclick="openTool('todo')"
+                    role="button"
+                    tabindex="0"
+                    onkeydown="if(event.key === 'Enter') openTool('todo')"
+                >
+
+                    <div class="tool-card-top">
+
+                        <span class="tool-number">
+                            02
+                        </span>
+
+                        <span class="tool-icon">
+                            ☑
+                        </span>
+
+                    </div>
+
+
+                    <div class="tool-card-content">
+
+                        <p class="tool-mini">
+                            HANDLE YOUR BUSINESS
+                        </p>
 
                         <h3>
                             TO-DO
                         </h3>
 
                         <p>
-                            Handle your business.
-                            No excuses.
+                            Keep your tasks
+                            organised and
+                            actually get them done.
                         </p>
 
-
-                        <div class="tool-sticker">
-                            GET IT DONE
-                        </div>
-
-                    </button>
+                    </div>
 
 
+                    <div class="tool-card-bottom">
 
-                    <!-- CALENDAR -->
+                        <span>
+                            OPEN TO-DO
+                        </span>
 
-                    <button
-                        class="tool-card calendar-card"
-                        type="button"
-                        onclick="openTool('calendar')"
-                    >
+                        <span class="arrow">
+                            ↗
+                        </span>
 
-                        <div class="tool-card-header">
+                    </div>
 
-                            <span class="tool-number">
-                                03
-                            </span>
-
-                            <span class="tool-arrow">
-                                ↗
-                            </span>
-
-                        </div>
+                </article>
 
 
-                        <div class="tool-icon-large">
-                            ✦
-                        </div>
 
+                <!-- =================================
+                     CALENDAR
+                     ================================= -->
+
+                <article
+                    class="tool-card calendar-card"
+                    onclick="openTool('calendar')"
+                    role="button"
+                    tabindex="0"
+                    onkeydown="if(event.key === 'Enter') openTool('calendar')"
+                >
+
+                    <div class="tool-card-top">
+
+                        <span class="tool-number">
+                            03
+                        </span>
+
+                        <span class="tool-icon">
+                            📅
+                        </span>
+
+                    </div>
+
+
+                    <div class="tool-card-content">
+
+                        <p class="tool-mini">
+                            PLAN THE CHAOS
+                        </p>
 
                         <h3>
                             CALENDAR
                         </h3>
 
                         <p>
-                            Plan your chaos
-                            before it plans you.
+                            Track important dates,
+                            plans and everything
+                            you cannot forget.
                         </p>
 
-
-                        <div class="tool-sticker">
-                            PLAN IT
-                        </div>
-
-                    </button>
-
-                </div>
-
-            </section>
+                    </div>
 
 
+                    <div class="tool-card-bottom">
 
-            <!-- ============================= -->
-            <!-- KALESHI QUOTE -->
-            <!-- ============================= -->
+                        <span>
+                            OPEN CALENDAR
+                        </span>
 
-            <section class="quote-section">
+                        <span class="arrow">
+                            ↗
+                        </span>
 
-                <div class="quote-card">
+                    </div>
 
-                    <span class="quote-star">
-                        ✦
-                    </span>
+                </article>
 
-                    <p>
-                        “A little organised,
-                        a little chaotic,
-                        completely iconic.”
-                    </p>
 
-                    <span class="quote-label">
-                        — KALESHI STUDENT CLUB
-                    </span>
+            </div>
 
-                </div>
-
-            </section>
-
-        </main>
+        </section>
 
 
 
-        <!-- ============================= -->
-        <!-- BOTTOM NAV -->
-        <!-- ============================= -->
+        <!-- =====================================
+             QUOTE SECTION
+             ===================================== -->
 
-        <nav class="bottom-nav">
+        <section class="quote-section">
 
-            <button
-                class="nav-item active"
-                type="button"
-                onclick="goHome()"
-            >
-
-                <span>
-                    ⌂
-                </span>
-
-                <small>
-                    HOME
-                </small>
-
-            </button>
+            <div class="quote-sticker">
+                💋
+            </div>
 
 
-            <button
-                class="nav-item"
-                type="button"
-                onclick="openTool('notes')"
-            >
+            <div class="quote-content">
 
-                <span>
-                    ♡
-                </span>
+                <p class="quote-label">
+                    TODAY'S REMINDER
+                </p>
 
-                <small>
-                    NOTES
-                </small>
+                <blockquote>
+                    “You don't need
+                    <span>perfect.</span>
+                    You need
+                    <span>progress.</span>”
+                </blockquote>
 
-            </button>
+                <p class="quote-small">
+                    Now go handle your business.
+                </p>
 
-
-            <button
-                class="nav-item"
-                type="button"
-                onclick="openTool('todo')"
-            >
-
-                <span>
-                    ✓
-                </span>
-
-                <small>
-                    TO-DO
-                </small>
-
-            </button>
+            </div>
 
 
-            <button
-                class="nav-item"
-                type="button"
-                onclick="openTool('calendar')"
-            >
+            <div class="quote-cherry">
+                🍒
+            </div>
 
-                <span>
-                    ✦
-                </span>
-
-                <small>
-                    CALENDAR
-                </small>
-
-            </button>
-
-        </nav>
+        </section>
 
 
 
-        <!-- ============================= -->
-        <!-- FOOTER -->
-        <!-- ============================= -->
+    </main>
 
-        <footer>
 
-            <span>
-                MADE WITH CHAOS + COFFEE
+
+    <!-- =========================================
+         BOTTOM NAVIGATION
+         ========================================= -->
+
+    <nav class="bottom-nav">
+
+        <a
+            href="index.html"
+            class="nav-item active"
+        >
+
+            <span class="nav-icon">
+                ⌂
             </span>
 
-            <span>
-                🍒 KALESHI
+            <span class="nav-label">
+                HOME
             </span>
 
-        </footer>
-
-    </div>
+        </a>
 
 
+        <a
+            href="notes.html"
+            class="nav-item"
+        >
 
-    <!-- ============================= -->
-    <!-- JAVASCRIPT -->
-    <!-- ============================= -->
+            <span class="nav-icon">
+                📝
+            </span>
+
+            <span class="nav-label">
+                NOTES
+            </span>
+
+        </a>
+
+
+        <a
+            href="todo.html"
+            class="nav-item"
+        >
+
+            <span class="nav-icon">
+                ☑
+            </span>
+
+            <span class="nav-label">
+                TO-DO
+            </span>
+
+        </a>
+
+
+        <a
+            href="calendar.html"
+            class="nav-item"
+        >
+
+            <span class="nav-icon">
+                📅
+            </span>
+
+            <span class="nav-label">
+                CALENDAR
+            </span>
+
+        </a>
+
+    </nav>
+
+
+
+    <!-- =========================================
+         FOOTER
+         ========================================= -->
+
+    <footer class="footer">
+
+        <p>
+            MADE FOR THE GIRL WHO GETS
+            THINGS DONE.
+        </p>
+
+        <div class="footer-symbols">
+            🍒 ✦ 🎀 ✦ 💋
+        </div>
+
+        <p class="footer-brand">
+            KALESHI STUDENT DASHBOARD
+        </p>
+
+    </footer>
+
+
+
+    <!-- =========================================
+         JAVASCRIPT
+         ========================================= -->
 
     <script src="script.js"></script>
 
+
 </body>
+
 </html>
