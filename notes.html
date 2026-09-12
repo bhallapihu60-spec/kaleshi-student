@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#16070d"
+    >
+
+    <meta
+        name="description"
+        content="KALESHI Notes — your personal student notes space"
+    >
+
+    <title>KALESHI — Notes</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <style>
+
+        /* =====================================================
+           KALESHI NOTES — MOBILE FIRST
+           ===================================================== */
+
+        .notes-page {
+            min-height: 100vh;
+            padding-bottom: 110px;
+        }
+
+        /* NOTES HEADER */
+
+        .notes-header {
+            margin-bottom: 30px;
+        }
+
+        .back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            padding: 11px 15px;
+
+            border: 1px solid var(--border);
+            border-radius: 14px;
+
+            background: rgba(255,255,255,.06);
+            color: var(--white);
+
+            font-size: 13px;
+            font-weight: 900;
+
+            cursor: pointer;
+        }
+
+        .back-button:hover {
+            background: rgba(255,49,93,.16);
+        }
+
+        .notes-title-row {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+
+            gap: 15px;
+            margin-top: 28px;
+        }
+
+        .notes-title h2 {
+            margin-top: 5px;
+
+            font-size: clamp(45px, 13vw, 75px);
+            line-height: .9;
+
+            letter-spacing: -3px;
+
+            font-weight: 1000;
+            font-style: italic;
+            text-transform: uppercase;
+        }
+
+        .notes-title h2 span {
+            display: block;
+            color: var(--cherry);
+        }
+
+        .notes-title p {
+            max-width: 300px;
+            margin-top: 15px;
+
+            color: var(--muted);
+
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .notes-sticker {
+            flex-shrink: 0;
+
+            padding: 10px 12px;
+
+            background: var(--cream);
+            color: #4b0f20;
+
+            font-size: 10px;
+            font-weight: 1000;
+            letter-spacing: 1px;
+
+            transform: rotate(5deg);
+            box-shadow: 8px 10px 25px rgba(0,0,0,.25);
+        }
+
+        /* ADD NOTE */
+
+        .add-note-button {
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin: 30px 0;
+
+            padding: 18px 20px;
+
+            border: none;
+            border-radius: 18px;
+
+            background: linear-gradient(
+                135deg,
+                var(--cherry),
+                var(--cherry-dark)
+            );
+
+            color: white;
+
+            font-size: 16px;
+            font-weight: 1000;
+            letter-spacing: 1px;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 15px 35px rgba(255,49,93,.25);
+
+            transition: .2s ease;
+        }
+
+        .add-note-button span {
+            width: 38px;
+            height: 38px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 50%;
+
+            background: rgba(255,255,255,.16);
+
+            font-size: 25px;
+        }
+
+        .add-note-button:active {
+            transform: scale(.98);
+        }
+
+        /* NOTES GRID */
+
+        .notes-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        /* NOTE CARD */
+
+        .note-card {
+            position: relative;
+
+            padding: 22px;
+
+            min-height: 190px;
+
+            border-radius: 22px;
+
+            overflow: hidden;
+
+            border: 1px solid rgba(255,255,255,.14);
+
+            box-shadow: 0 20px 45px rgba(0,0,0,.28);
+
+            animation: noteAppear .35s ease;
+        }
+
+        @keyframes noteAppear {
+
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+        }
+
+        .note-card:nth-child(3n + 1) {
+            background: linear-gradient(
+                145deg,
+                #641329,
+                #2b0a15
+            );
+        }
+
+        .note-card:nth-child(3n + 2) {
+            background: linear-gradient(
+                145deg,
+                #ff4d77,
+                #a30d35
+            );
+        }
+
+        .note-card:nth-child(3n + 3) {
+            background: linear-gradient(
+                145deg,
+                #38101e,
+                #15060c
+            );
+        }
+
+        .note-card::after {
+            content: "✦";
+
+            position: absolute;
+            right: 18px;
+            bottom: 10px;
+
+            color: rgba(255,255,255,.12);
+
+            font-size: 70px;
+            font-weight: 900;
+        }
+
+        .note-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 10px;
+        }
+
+        .note-date {
+            color: rgba(255,255,255,.65);
+
+            font-size: 10px;
+            font-weight: 900;
+
+            letter-spacing: 1.5px;
+        }
+
+        .delete-note {
+            width: 40px;
+            height: 40px;
+
+            display: grid;
+            place-items: center;
+
+            border: 1px solid rgba(255,255,255,.18);
+            border-radius: 12px;
+
+            background: rgba(0,0,0,.16);
+
+            color: white;
+
+            font-size: 17px;
+
+            cursor: pointer;
+
+            z-index: 2;
+        }
+
+        .delete-note:active {
+            transform: scale(.92);
+        }
+
+        .note-card h3 {
+            position: relative;
+            z-index: 1;
+
+            margin-top: 25px;
+
+            font-size: 25px;
+            line-height: 1.05;
+
+            letter-spacing: -.5px;
+
+            font-weight: 1000;
+            font-style: italic;
+            text-transform: uppercase;
+        }
+
+        .note-card p {
+            position: relative;
+            z-index: 1;
+
+            margin-top: 10px;
+
+            max-width: 90%;
+
+            color: rgba(255,255,255,.78);
+
+            font-size: 15px;
+            line-height: 1.55;
+        }
+
+        /* EMPTY STATE */
+
+        .empty-notes {
+            display: none;
+
+            padding: 45px 25px;
+
+            border: 1px dashed rgba(255,109,145,.4);
+            border-radius: 22px;
+
+            background: rgba(255,49,93,.05);
+
+            text-align: center;
+        }
+
+        .empty-notes .empty-icon {
+            font-size: 45px;
+        }
+
+        .empty-notes h3 {
+            margin-top: 15px;
+
+            font-size: 25px;
+            font-weight: 1000;
+            font-style: italic;
+        }
+
+        .empty-notes p {
+            margin-top: 8px;
+
+            color: var(--muted);
+
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        /* MODAL */
+
+        .note-modal {
+            position: fixed;
+
+            inset: 0;
+
+            z-index: 500;
+
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+
+            padding: 15px;
+
+            background: rgba(0,0,0,.65);
+
+            backdrop-filter: blur(12px);
+        }
+
+        .note-modal.show {
+            display: flex;
+        }
+
+        .note-modal-box {
+            width: min(520px, 100%);
+
+            padding: 25px 20px 22px;
+
+            border: 1px solid rgba(255,255,255,.16);
+            border-radius: 28px 28px 20px 20px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #3b0d1b,
+                    #16070d
+                );
+
+            box-shadow: 0 -10px 60px rgba(0,0,0,.5);
+
+            animation: modalUp .3s ease;
+        }
+
+        @keyframes modalUp {
+
+            from {
+                transform: translateY(30px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+
+        }
+
+        .modal-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-top h3 {
+            font-size: 28px;
+
+            font-weight: 1000;
+            font-style: italic;
+        }
+
+        .close-modal {
+            width: 42px;
+            height: 42px;
+
+            display: grid;
+            place-items: center;
+
+            border: 1px solid var(--border);
+            border-radius: 50%;
+
+            background: rgba(255,255,255,.07);
+
+            color: white;
+
+            font-size: 20px;
+
+            cursor: pointer;
+        }
+
+        .note-form {
+            margin-top: 25px;
+        }
+
+        .note-form label {
+            display: block;
+
+            margin-bottom: 8px;
+
+            color: var(--hot-pink);
+
+            font-size: 10px;
+            font-weight: 1000;
+            letter-spacing: 2px;
+        }
+
+        .note-form input,
+        .note-form textarea {
+            width: 100%;
+
+            border: 1px solid rgba(255,255,255,.16);
+            border-radius: 15px;
+
+            outline: none;
+
+            background: rgba(255,255,255,.07);
+
+            color: white;
+
+            font-family: Arial, Helvetica, sans-serif;
+
+            font-size: 17px;
+        }
+
+        .note-form input {
+            height: 55px;
+            padding: 0 15px;
+        }
+
+        .note-form textarea {
+            min-height: 150px;
+
+            padding: 15px;
+
+            resize: vertical;
+
+            line-height: 1.5;
+        }
+
+        .note-form input:focus,
+        .note-form textarea:focus {
+            border-color: var(--hot-pink);
+
+            box-shadow:
+                0 0 0 3px rgba(255,109,145,.1);
+        }
+
+        .save-note-button {
+            width: 100%;
+
+            margin-top: 18px;
+
+            min-height: 56px;
+
+            border: none;
+            border-radius: 15px;
+
+            background: var(--white);
+            color: var(--cola-dark);
+
+            font-size: 16px;
+            font-weight: 1000;
+
+            cursor: pointer;
+        }
+
+        /* DESKTOP */
+
+        @media (min-width: 700px) {
+
+            .notes-page {
+                padding-bottom: 120px;
+            }
+
+            .notes-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .note-modal {
+                align-items: center;
+            }
+
+            .note-modal-box {
+                border-radius: 28px;
+            }
+
+        }
+
+        /* LIGHT MODE */
+
+        body.light-mode .note-card {
+            box-shadow: 0 15px 35px rgba(80,10,30,.12);
+        }
+
+        body.light-mode .note-modal-box {
+            background: #fff4f6;
+            color: #270914;
+        }
+
+        body.light-mode .modal-top h3 {
+            color: #270914;
+        }
+
+        body.light-mode .close-modal {
+            color: #270914;
+            background: rgba(80,10,30,.06);
+        }
+
+        body.light-mode .note-form input,
+        body.light-mode .note-form textarea {
+            color: #270914;
+            background: rgba(80,10,30,.05);
+            border-color: rgba(80,10,30,.12);
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="background-decor decor-one"></div>
+    <div class="background-decor decor-two"></div>
+
+    <div class="sticker sticker-cherry">
+        🍒
+    </div>
+
+    <div class="sticker sticker-star">
+        ✦
+    </div>
+
+    <div class="notes-page app-shell">
+
+        <!-- HEADER -->
+
+        <header class="notes-header">
+
+            <button
+                class="back-button"
+                type="button"
+                onclick="goHome()"
+            >
+                ← HOME
+            </button>
+
+            <div class="notes-title-row">
+
+                <div class="notes-title">
+
+                    <div class="section-label">
+                        KALESHI BRAIN DUMP
+                    </div>
+
+                    <h2>
+                        My
+                        <span>Notes.</span>
+                    </h2>
+
+                    <p>
+                        Put the thoughts somewhere before
+                        your brain starts doing too much.
+                    </p>
+
+                </div>
+
+                <div class="notes-sticker">
+                    WRITE IT.
+                </div>
+
+            </div>
+
+        </header>
+
+        <!-- ADD NOTE -->
+
+        <button
+            class="add-note-button"
+            type="button"
+            onclick="openNoteModal()"
+        >
+
+            <strong>
+                + ADD A NEW NOTE
+            </strong>
+
+            <span>
+                +
+            </span>
+
+        </button>
+
+        <!-- NOTES -->
+
+        <main>
+
+            <div
+                class="notes-grid"
+                id="notesGrid"
+            >
+            </div>
+
+            <div
+                class="empty-notes"
+                id="emptyNotes"
+            >
+
+                <div class="empty-icon">
+                    💋
+                </div>
+
+                <h3>
+                    Nothing here yet.
+                </h3>
+
+                <p>
+                    Your brain is currently
+                    suspiciously quiet.
+                    Add your first note.
+                </p>
+
+            </div>
+
+        </main>
+
+        <!-- MODAL -->
+
+        <div
+            class="note-modal"
+            id="noteModal"
+        >
+
+            <div class="note-modal-box">
+
+                <div class="modal-top">
+
+                    <h3>
+                        New Note ✦
+                    </h3>
+
+                    <button
+                        class="close-modal"
+                        type="button"
+                        onclick="closeNoteModal()"
+                    >
+                        ×
+                    </button>
+
+                </div>
+
+                <form
+                    class="note-form"
+                    id="noteForm"
+                >
+
+                    <label for="noteTitle">
+                        NOTE TITLE
+                    </label>
+
+                    <input
+                        id="noteTitle"
+                        type="text"
+                        placeholder="e.g. Maths formulas"
+                        maxlength="60"
+                        required
+                    >
+
+                    <br><br>
+
+                    <label for="noteText">
+                        YOUR NOTE
+                    </label>
+
+                    <textarea
+                        id="noteText"
+                        placeholder="Write whatever you need..."
+                        maxlength="1000"
+                        required
+                    ></textarea>
+
+                    <button
+                        class="save-note-button"
+                        type="submit"
+                    >
+                        SAVE NOTE
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+        <!-- BOTTOM NAV -->
+
+        <nav class="bottom-nav">
+
+            <button
+                class="nav-item"
+                type="button"
+                onclick="goHome()"
+            >
+                <span>⌂</span>
+                <small>HOME</small>
+            </button>
+
+            <button
+                class="nav-item active"
+                type="button"
+            >
+                <span>♡</span>
+                <small>NOTES</small>
+            </button>
+
+            <button
+                class="nav-item"
+                type="button"
+                onclick="openTool('todo')"
+            >
+                <span>✓</span>
+                <small>TO-DO</small>
+            </button>
+
+            <button
+                class="nav-item"
+                type="button"
+                onclick="openTool('calendar')"
+            >
+                <span>✦</span>
+                <small>CALENDAR</small>
+            </button>
+
+        </nav>
+
+        <footer>
+
+            <span>
+                MADE WITH CHAOS + COFFEE
+            </span>
+
+            <span>
+                🍒 KALESHI
+            </span>
+
+        </footer>
+
+    </div>
+
+    <script src="script.js"></script>
+    <script src="notes.js"></script>
+
+</body>
+
+</html>
