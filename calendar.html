@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#260912"
+    >
+
+    <title>KALESHI — Calendar</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <style>
+
+        /* =================================================
+           CALENDAR PAGE
+           ================================================= */
+
+        .calendar-page {
+            width: min(100% - 22px, 1000px);
+            margin: 0 auto;
+            padding: 22px 0 120px;
+        }
+
+
+        /* =================================================
+           BACK BUTTON
+           ================================================= */
+
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            min-height: 50px;
+            padding: 0 18px;
+
+            border: 1px solid rgba(255,255,255,.18);
+            border-radius: 999px;
+
+            background: rgba(255,255,255,.07);
+            color: var(--white);
+
+            text-decoration: none;
+
+            font-size: 14px;
+            font-weight: 900;
+
+            margin-bottom: 28px;
+
+            transition: .2s ease;
+        }
+
+        .back-home:hover {
+            transform: translateY(-2px);
+            background: rgba(255,255,255,.12);
+        }
+
+
+        /* =================================================
+           HEADER
+           ================================================= */
+
+        .calendar-kicker {
+            color: var(--hot-pink);
+
+            font-size: 13px;
+            font-weight: 1000;
+
+            letter-spacing: .18em;
+            text-transform: uppercase;
+
+            margin-bottom: 8px;
+        }
+
+        .calendar-title {
+            margin: 0;
+
+            color: var(--cream);
+
+            font-size: clamp(52px, 16vw, 86px);
+            line-height: .9;
+
+            font-weight: 1000;
+            letter-spacing: -.06em;
+        }
+
+        .calendar-subtitle {
+            margin: 16px 0 26px;
+
+            color: var(--muted);
+
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+
+        /* =================================================
+           CALENDAR CARD
+           ================================================= */
+
+        .calendar-card {
+            padding: 16px;
+
+            border-radius: 28px;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,49,93,.14),
+                    rgba(255,255,255,.055)
+                );
+
+            border: 1px solid rgba(255,255,255,.14);
+
+            box-shadow: var(--shadow);
+
+            overflow: hidden;
+        }
+
+
+        /* =================================================
+           MONTH HEADER
+           ================================================= */
+
+        .month-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 12px;
+
+            margin-bottom: 18px;
+        }
+
+        .month-name {
+            margin: 0;
+
+            color: var(--cream);
+
+            font-size: clamp(25px, 7vw, 38px);
+            line-height: 1;
+
+            font-weight: 1000;
+
+            letter-spacing: -.04em;
+        }
+
+        .month-controls {
+            display: flex;
+            gap: 7px;
+        }
+
+        .month-btn {
+            width: 46px;
+            height: 46px;
+
+            border: 1px solid rgba(255,255,255,.14);
+            border-radius: 14px;
+
+            background: rgba(255,255,255,.08);
+
+            color: var(--white);
+
+            font-size: 22px;
+            font-weight: 900;
+
+            cursor: pointer;
+
+            transition: .2s ease;
+        }
+
+        .month-btn:hover {
+            background: var(--cherry);
+            transform: translateY(-2px);
+        }
+
+        .month-btn:active {
+            transform: scale(.95);
+        }
+
+
+        /* =================================================
+           WEEKDAYS
+           ================================================= */
+
+        .weekdays {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+
+            gap: 5px;
+
+            margin-bottom: 7px;
+        }
+
+        .weekday {
+            text-align: center;
+
+            color: var(--hot-pink);
+
+            font-size: 11px;
+            font-weight: 1000;
+
+            letter-spacing: .05em;
+        }
+
+
+        /* =================================================
+           CALENDAR GRID
+           ================================================= */
+
+        .calendar-grid {
+            display: grid;
+
+            grid-template-columns: repeat(7, 1fr);
+
+            gap: 5px;
+        }
+
+
+        /* =================================================
+           DATE BUTTON
+           ================================================= */
+
+        .calendar-day {
+            position: relative;
+
+            min-height: 58px;
+
+            padding: 7px 5px;
+
+            border: 1px solid rgba(255,255,255,.08);
+            border-radius: 13px;
+
+            background: rgba(0,0,0,.18);
+
+            color: var(--cream);
+
+            text-align: left;
+
+            cursor: pointer;
+
+            transition: .2s ease;
+
+            overflow: hidden;
+        }
+
+        .calendar-day:hover {
+            transform: translateY(-2px);
+
+            border-color: rgba(255,109,145,.45);
+
+            background: rgba(255,49,93,.13);
+        }
+
+        .calendar-day:active {
+            transform: scale(.97);
+        }
+
+        .calendar-day.other-month {
+            opacity: .25;
+        }
+
+        .calendar-day.today {
+            border: 2px solid var(--cherry);
+
+            background:
+                linear-gradient(
+                    145deg,
+                    rgba(255,49,93,.25),
+                    rgba(255,255,255,.06)
+                );
+
+            box-shadow:
+                0 0 20px rgba(255,49,93,.16);
+        }
+
+        .day-number {
+            display: block;
+
+            font-size: 15px;
+            font-weight: 1000;
+
+            line-height: 1;
+        }
+
+        .today .day-number {
+            color: var(--hot-pink);
+        }
+
+
+        /* =================================================
+           EVENT DOT
+           ================================================= */
+
+        .event-dot {
+            position: absolute;
+
+            bottom: 7px;
+            left: 7px;
+
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: var(--cherry);
+
+            box-shadow:
+                0 0 10px rgba(255,49,93,.7);
+        }
+
+
+        /* =================================================
+           SELECTED DAY
+           ================================================= */
+
+        .calendar-day.selected {
+            background: var(--cherry);
+
+            border-color: var(--cherry);
+
+            color: white;
+
+            transform: translateY(-2px);
+
+            box-shadow:
+                0 10px 25px rgba(255,49,93,.25);
+        }
+
+        .calendar-day.selected .day-number {
+            color: white;
+        }
+
+
+        /* =================================================
+           SELECTED DATE INFO
+           ================================================= */
+
+        .selected-section {
+            margin-top: 18px;
+
+            padding: 18px;
+
+            border-radius: 23px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,.08),
+                    rgba(255,49,93,.08)
+                );
+
+            border: 1px solid rgba(255,255,255,.12);
+        }
+
+        .selected-label {
+            color: var(--hot-pink);
+
+            font-size: 11px;
+            font-weight: 1000;
+
+            letter-spacing: .13em;
+            text-transform: uppercase;
+
+            margin-bottom: 5px;
+        }
+
+        .selected-date {
+            color: var(--cream);
+
+            font-size: 25px;
+            font-weight: 1000;
+
+            margin-bottom: 15px;
+        }
+
+
+        /* =================================================
+           EVENT FORM
+           ================================================= */
+
+        .event-form {
+            display: flex;
+
+            gap: 9px;
+        }
+
+        .event-input {
+            flex: 1;
+
+            min-width: 0;
+            min-height: 54px;
+
+            padding: 0 15px;
+
+            border: 1px solid rgba(255,255,255,.13);
+            border-radius: 16px;
+
+            outline: none;
+
+            background: rgba(0,0,0,.22);
+
+            color: var(--white);
+
+            font-family: inherit;
+
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .event-input::placeholder {
+            color: #b99ca5;
+        }
+
+        .event-input:focus {
+            border-color: var(--hot-pink);
+
+            box-shadow:
+                0 0 0 3px rgba(255,109,145,.12);
+        }
+
+        .event-add {
+            min-width: 56px;
+            min-height: 54px;
+
+            border: none;
+            border-radius: 16px;
+
+            background: var(--cherry);
+
+            color: white;
+
+            font-size: 27px;
+            font-weight: 1000;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 10px 25px rgba(255,49,93,.25);
+        }
+
+
+        /* =================================================
+           EVENT LIST
+           ================================================= */
+
+        .event-list {
+            margin-top: 15px;
+
+            display: flex;
+            flex-direction: column;
+
+            gap: 8px;
+        }
+
+        .event-item {
+            display: flex;
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 10px;
+
+            padding: 12px 13px;
+
+            border-radius: 15px;
+
+            background: rgba(0,0,0,.18);
+
+            border: 1px solid rgba(255,255,255,.09);
+        }
+
+        .event-text {
+            color: var(--cream);
+
+            font-size: 14px;
+            font-weight: 800;
+
+            overflow-wrap: anywhere;
+        }
+
+        .delete-event {
+            flex-shrink: 0;
+
+            width: 38px;
+            height: 38px;
+
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: 12px;
+
+            background: rgba(255,49,93,.08);
+
+            color: #e3c4cc;
+
+            cursor: pointer;
+
+            font-size: 19px;
+        }
+
+        .delete-event:hover {
+            background: rgba(255,49,93,.22);
+            color: white;
+        }
+
+
+        /* =================================================
+           EMPTY EVENTS
+           ================================================= */
+
+        .no-events {
+            color: var(--muted);
+
+            font-size: 13px;
+
+            line-height: 1.5;
+        }
+
+
+        /* =================================================
+           KALESHI TIP
+           ================================================= */
+
+        .calendar-tip {
+            margin-top: 18px;
+
+            padding: 18px;
+
+            border-radius: 22px;
+
+            background: var(--cola-light);
+
+            border: 1px solid rgba(255,109,145,.18);
+        }
+
+        .calendar-tip strong {
+            display: block;
+
+            color: var(--cream);
+
+            font-size: 15px;
+            font-weight: 1000;
+
+            margin-bottom: 5px;
+        }
+
+        .calendar-tip p {
+            margin: 0;
+
+            color: var(--muted);
+
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+
+        /* =================================================
+           MOBILE
+           ================================================= */
+
+        @media (max-width: 600px) {
+
+            .calendar-page {
+                padding-top: 20px;
+            }
+
+            .calendar-card {
+                padding: 12px;
+                border-radius: 24px;
+            }
+
+            .month-header {
+                margin-bottom: 15px;
+            }
+
+            .month-btn {
+                width: 48px;
+                height: 48px;
+            }
+
+            .weekdays {
+                gap: 4px;
+            }
+
+            .weekday {
+                font-size: 10px;
+            }
+
+            .calendar-grid {
+                gap: 4px;
+            }
+
+            .calendar-day {
+                min-height: 54px;
+                border-radius: 11px;
+                padding: 7px 4px;
+            }
+
+            .day-number {
+                font-size: 14px;
+            }
+
+            .event-dot {
+                bottom: 6px;
+                left: 6px;
+                width: 6px;
+                height: 6px;
+            }
+
+            .selected-section {
+                padding: 16px;
+                border-radius: 20px;
+            }
+
+            .selected-date {
+                font-size: 22px;
+            }
+
+            .event-input {
+                min-height: 56px;
+                font-size: 16px;
+            }
+
+            .event-add {
+                min-width: 58px;
+                min-height: 56px;
+            }
+
+        }
+
+
+        /* =================================================
+           VERY SMALL PHONES
+           ================================================= */
+
+        @media (max-width: 380px) {
+
+            .calendar-day {
+                min-height: 49px;
+                padding: 6px 3px;
+            }
+
+            .day-number {
+                font-size: 13px;
+            }
+
+            .weekday {
+                font-size: 9px;
+            }
+
+            .calendar-grid,
+            .weekdays {
+                gap: 3px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =================================================
+         BACKGROUND STICKERS
+         ================================================= -->
+
+    <div class="bg-sticker sticker-cherry">
+        🍒
+    </div>
+
+    <div class="bg-sticker sticker-star">
+        ✦
+    </div>
+
+    <div class="bg-sticker sticker-bow">
+        🎀
+    </div>
+
+
+    <!-- =================================================
+         MAIN
+         ================================================= -->
+
+    <main class="calendar-page">
+
+
+        <!-- BACK -->
+
+        <a
+            href="index.html"
+            class="back-home"
+        >
+            ← Home
+        </a>
+
+
+        <!-- HEADER -->
+
+        <div class="calendar-kicker">
+            KALESHI MODE: ON
+        </div>
+
+        <h1 class="calendar-title">
+            CALENDAR.
+        </h1>
+
+        <p class="calendar-subtitle">
+            Plan it. Schedule it. Handle it.
+        </p>
+
+
+        <!-- =================================================
+             CALENDAR
+             ================================================= -->
+
+        <section class="calendar-card">
+
+
+            <!-- MONTH HEADER -->
+
+            <div class="month-header">
+
+                <h2
+                    class="month-name"
+                    id="monthName"
+                >
+                    Month Year
+                </h2>
+
+                <div class="month-controls">
+
+                    <button
+                        class="month-btn"
+                        type="button"
+                        onclick="changeMonth(-1)"
+                        aria-label="Previous month"
+                    >
+                        ‹
+                    </button>
+
+                    <button
+                        class="month-btn"
+                        type="button"
+                        onclick="changeMonth(1)"
+                        aria-label="Next month"
+                    >
+                        ›
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- WEEKDAYS -->
+
+            <div class="weekdays">
+
+                <div class="weekday">SUN</div>
+                <div class="weekday">MON</div>
+                <div class="weekday">TUE</div>
+                <div class="weekday">WED</div>
+                <div class="weekday">THU</div>
+                <div class="weekday">FRI</div>
+                <div class="weekday">SAT</div>
+
+            </div>
+
+
+            <!-- DAYS -->
+
+            <div
+                class="calendar-grid"
+                id="calendarGrid"
+            ></div>
+
+
+            <!-- =================================================
+                 SELECTED DATE
+                 ================================================= -->
+
+            <section class="selected-section">
+
+                <div class="selected-label">
+                    Selected date
+                </div>
+
+                <div
+                    class="selected-date"
+                    id="selectedDate"
+                >
+                    Select a date
+                </div>
+
+
+                <!-- EVENT FORM -->
+
+                <form
+                    class="event-form"
+                    id="eventForm"
+                >
+
+                    <input
+                        type="text"
+                        id="eventInput"
+                        class="event-input"
+                        placeholder="Add a plan..."
+                        maxlength="100"
+                        autocomplete="off"
+                    >
+
+                    <button
+                        type="submit"
+                        class="event-add"
+                        aria-label="Add event"
+                    >
+                        +
+                    </button>
+
+                </form>
+
+
+                <!-- EVENT LIST -->
+
+                <div
+                    class="event-list"
+                    id="eventList"
+                ></div>
+
+            </section>
+
+
+        </section>
+
+
+        <!-- =================================================
+             TIP
+             ================================================= -->
+
+        <section class="calendar-tip">
+
+            <strong>
+                🍒 KALESHI TIP
+            </strong>
+
+            <p>
+                Tap any date to select it, then add your plans.
+                Your calendar events stay saved on this device.
+            </p>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- =================================================
+         BOTTOM NAV
+         ================================================= -->
+
+    <nav class="bottom-nav">
+
+        <a href="index.html">
+            <span>⌂</span>
+            Home
+        </a>
+
+        <a href="notes.html">
+            <span>✎</span>
+            Notes
+        </a>
+
+        <a href="todo.html">
+            <span>✓</span>
+            To-Do
+        </a>
+
+        <a
+            href="calendar.html"
+            class="active"
+        >
+            <span>▣</span>
+            Calendar
+        </a>
+
+    </nav>
+
+
+    <!-- =================================================
+         SCRIPTS
+         ================================================= -->
+
+    <script src="script.js"></script>
+    <script src="calendar.js"></script>
+
+</body>
+
+</html>
