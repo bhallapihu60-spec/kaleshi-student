@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="theme-color"
+        content="#260912"
+    >
+
+    <title>KALESHI — To-Do List</title>
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+    <style>
+
+        /* =================================================
+           TO-DO PAGE
+           ================================================= */
+
+        .todo-page {
+            width: min(100% - 32px, 1000px);
+            margin: 0 auto;
+            padding: 30px 0 120px;
+        }
+
+
+        /* =================================================
+           BACK BUTTON
+           ================================================= */
+
+        .back-home {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            min-height: 48px;
+            padding: 0 18px;
+
+            border: 1px solid rgba(255,255,255,.18);
+            border-radius: 999px;
+
+            background: rgba(255,255,255,.07);
+            color: var(--white);
+
+            text-decoration: none;
+            font-weight: 800;
+            font-size: 14px;
+
+            margin-bottom: 28px;
+
+            transition: .2s ease;
+        }
+
+        .back-home:hover {
+            transform: translateY(-2px);
+            background: rgba(255,255,255,.12);
+        }
+
+
+        /* =================================================
+           PAGE HEADER
+           ================================================= */
+
+        .todo-header {
+            margin-bottom: 28px;
+        }
+
+        .todo-kicker {
+            color: var(--hot-pink);
+            font-size: 13px;
+            font-weight: 900;
+            letter-spacing: .18em;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .todo-title {
+            margin: 0;
+
+            font-size: clamp(48px, 13vw, 82px);
+            line-height: .9;
+
+            font-weight: 1000;
+            letter-spacing: -.055em;
+
+            color: var(--cream);
+        }
+
+        .todo-subtitle {
+            margin: 16px 0 0;
+
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
+
+        /* =================================================
+           STATS
+           ================================================= */
+
+        .todo-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+
+            margin-bottom: 22px;
+        }
+
+        .todo-stat {
+            padding: 18px;
+
+            border-radius: var(--radius-lg);
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,49,93,.16),
+                    rgba(255,255,255,.05)
+                );
+
+            border: 1px solid rgba(255,255,255,.12);
+
+            box-shadow: 0 15px 35px rgba(0,0,0,.2);
+        }
+
+        .todo-stat span {
+            display: block;
+
+            color: var(--muted);
+            font-size: 12px;
+            font-weight: 800;
+
+            text-transform: uppercase;
+            letter-spacing: .1em;
+
+            margin-bottom: 6px;
+        }
+
+        .todo-stat strong {
+            display: block;
+
+            color: var(--cream);
+            font-size: 32px;
+            line-height: 1;
+
+            font-weight: 1000;
+        }
+
+
+        /* =================================================
+           ADD TASK BOX
+           ================================================= */
+
+        .task-form {
+            display: flex;
+            gap: 10px;
+
+            margin-bottom: 26px;
+
+            padding: 12px;
+
+            border-radius: 24px;
+
+            background: rgba(255,255,255,.07);
+
+            border: 1px solid rgba(255,255,255,.14);
+
+            box-shadow: var(--shadow);
+        }
+
+        .task-input {
+            flex: 1;
+
+            min-width: 0;
+            min-height: 56px;
+
+            padding: 0 16px;
+
+            border: 1px solid rgba(255,255,255,.13);
+            border-radius: 16px;
+
+            outline: none;
+
+            background: rgba(0,0,0,.22);
+
+            color: var(--white);
+
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .task-input::placeholder {
+            color: #b99ca5;
+        }
+
+        .task-input:focus {
+            border-color: var(--hot-pink);
+            box-shadow: 0 0 0 3px rgba(255,109,145,.12);
+        }
+
+        .add-task-btn {
+            flex-shrink: 0;
+
+            min-width: 58px;
+            min-height: 56px;
+
+            border: none;
+            border-radius: 16px;
+
+            background: var(--cherry);
+            color: white;
+
+            font-size: 28px;
+            font-weight: 900;
+
+            cursor: pointer;
+
+            box-shadow:
+                0 10px 25px rgba(255,49,93,.25);
+
+            transition: .2s ease;
+        }
+
+        .add-task-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .add-task-btn:active {
+            transform: scale(.96);
+        }
+
+
+        /* =================================================
+           TASK LIST HEADER
+           ================================================= */
+
+        .task-list-heading {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            gap: 12px;
+
+            margin-bottom: 12px;
+        }
+
+        .task-list-heading h2 {
+            margin: 0;
+
+            color: var(--cream);
+
+            font-size: 22px;
+            font-weight: 1000;
+        }
+
+        .clear-completed {
+            border: none;
+            background: transparent;
+
+            color: var(--hot-pink);
+
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 900;
+
+            cursor: pointer;
+
+            padding: 10px 4px;
+        }
+
+
+        /* =================================================
+           TASK LIST
+           ================================================= */
+
+        #taskList {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+
+        /* =================================================
+           TASK ITEM
+           ================================================= */
+
+        .task-item {
+            display: flex;
+            align-items: center;
+
+            gap: 14px;
+
+            min-height: 82px;
+
+            padding: 14px;
+
+            border-radius: 22px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,255,255,.09),
+                    rgba(255,255,255,.035)
+                );
+
+            border: 1px solid rgba(255,255,255,.13);
+
+            box-shadow:
+                0 12px 30px rgba(0,0,0,.18);
+
+            transition:
+                transform .2s ease,
+                opacity .2s ease,
+                border-color .2s ease;
+        }
+
+        .task-item:hover {
+            transform: translateY(-2px);
+            border-color: rgba(255,109,145,.35);
+        }
+
+
+        /* =================================================
+           BIG CHECKBOX
+           ================================================= */
+
+        .big-checkbox {
+            flex-shrink: 0;
+
+            width: 48px;
+            height: 48px;
+
+            border-radius: 15px;
+
+            border: 2px solid rgba(255,109,145,.6);
+
+            background: rgba(255,49,93,.08);
+
+            color: white;
+
+            display: grid;
+            place-items: center;
+
+            cursor: pointer;
+
+            transition: .2s ease;
+        }
+
+        .big-checkbox span {
+            opacity: 0;
+
+            font-size: 27px;
+            font-weight: 1000;
+
+            transform: scale(.5);
+
+            transition: .2s ease;
+        }
+
+        .big-checkbox:hover {
+            background: rgba(255,49,93,.2);
+            transform: scale(1.04);
+        }
+
+
+        /* =================================================
+           TASK CONTENT
+           ================================================= */
+
+        .task-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .task-content strong {
+            display: block;
+
+            color: var(--cream);
+
+            font-size: 16px;
+            line-height: 1.35;
+
+            font-weight: 900;
+
+            overflow-wrap: anywhere;
+        }
+
+        .task-content small {
+            display: block;
+
+            margin-top: 5px;
+
+            color: var(--muted);
+
+            font-size: 10px;
+            font-weight: 900;
+
+            letter-spacing: .09em;
+        }
+
+
+        /* =================================================
+           DELETE BUTTON
+           ================================================= */
+
+        .delete-task {
+            flex-shrink: 0;
+
+            width: 42px;
+            height: 42px;
+
+            border: 1px solid rgba(255,255,255,.1);
+            border-radius: 14px;
+
+            background: rgba(0,0,0,.18);
+
+            color: #d8b8c0;
+
+            font-size: 25px;
+            line-height: 1;
+
+            cursor: pointer;
+
+            transition: .2s ease;
+        }
+
+        .delete-task:hover {
+            color: white;
+            background: rgba(255,49,93,.2);
+        }
+
+
+        /* =================================================
+           COMPLETED TASK
+           ================================================= */
+
+        .task-item.completed {
+            opacity: .65;
+        }
+
+        .task-item.completed .big-checkbox {
+            background: var(--cherry);
+            border-color: var(--cherry);
+        }
+
+        .task-item.completed .big-checkbox span {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .task-item.completed .task-content strong {
+            text-decoration: line-through;
+            text-decoration-thickness: 2px;
+            color: #c6aeb5;
+        }
+
+
+        /* =================================================
+           EMPTY STATE
+           ================================================= */
+
+        .empty-tasks {
+            text-align: center;
+
+            padding: 55px 22px;
+
+            border-radius: 25px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(255,49,93,.1),
+                    rgba(255,255,255,.04)
+                );
+
+            border: 1px dashed rgba(255,109,145,.3);
+        }
+
+        .empty-cherry {
+            font-size: 46px;
+            margin-bottom: 12px;
+        }
+
+        .empty-tasks h3 {
+            margin: 0 0 8px;
+
+            color: var(--cream);
+
+            font-size: 24px;
+            font-weight: 1000;
+        }
+
+        .empty-tasks p {
+            margin: 0;
+
+            color: var(--muted);
+
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+
+        /* =================================================
+           MOBILE
+           ================================================= */
+
+        @media (max-width: 600px) {
+
+            .todo-page {
+                width: min(100% - 22px, 1000px);
+                padding-top: 22px;
+            }
+
+            .back-home {
+                min-height: 50px;
+                padding: 0 16px;
+                font-size: 14px;
+            }
+
+            .todo-title {
+                font-size: clamp(52px, 16vw, 78px);
+            }
+
+            .todo-subtitle {
+                font-size: 15px;
+            }
+
+            .todo-stats {
+                gap: 9px;
+            }
+
+            .todo-stat {
+                padding: 16px;
+            }
+
+            .todo-stat strong {
+                font-size: 29px;
+            }
+
+            .task-form {
+                padding: 9px;
+                gap: 8px;
+            }
+
+            .task-input {
+                min-height: 58px;
+                font-size: 16px;
+                padding: 0 14px;
+            }
+
+            .add-task-btn {
+                width: 58px;
+                min-width: 58px;
+                min-height: 58px;
+            }
+
+            .task-item {
+                min-height: 88px;
+                padding: 13px 11px;
+                gap: 11px;
+                border-radius: 20px;
+            }
+
+            .big-checkbox {
+                width: 50px;
+                height: 50px;
+                border-radius: 16px;
+            }
+
+            .task-content strong {
+                font-size: 15px;
+            }
+
+            .delete-task {
+                width: 42px;
+                height: 42px;
+            }
+
+            .task-list-heading h2 {
+                font-size: 20px;
+            }
+
+        }
+
+
+        /* =================================================
+           VERY SMALL PHONES
+           ================================================= */
+
+        @media (max-width: 380px) {
+
+            .task-item {
+                gap: 8px;
+                padding: 10px 8px;
+            }
+
+            .big-checkbox {
+                width: 46px;
+                height: 46px;
+            }
+
+            .delete-task {
+                width: 38px;
+                height: 38px;
+            }
+
+            .task-content strong {
+                font-size: 14px;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+    <!-- =================================================
+         BACKGROUND DECORATIONS
+         ================================================= -->
+
+    <div class="bg-sticker sticker-cherry">🍒</div>
+    <div class="bg-sticker sticker-star">✦</div>
+    <div class="bg-sticker sticker-bow">🎀</div>
+
+
+    <!-- =================================================
+         MAIN
+         ================================================= -->
+
+    <main class="todo-page">
+
+
+        <!-- BACK -->
+
+        <a
+            href="index.html"
+            class="back-home"
+        >
+            ← Home
+        </a>
+
+
+        <!-- HEADER -->
+
+        <header class="todo-header">
+
+            <div class="todo-kicker">
+                KALESHI MODE: ON
+            </div>
+
+            <h1 class="todo-title">
+                TO-DO.
+            </h1>
+
+            <p class="todo-subtitle">
+                Get your life together. One little checkbox at a time.
+            </p>
+
+        </header>
+
+
+        <!-- =================================================
+             STATS
+             ================================================= -->
+
+        <section class="todo-stats">
+
+            <div class="todo-stat">
+
+                <span>
+                    Total tasks
+                </span>
+
+                <strong id="totalCount">
+                    0
+                </strong>
+
+            </div>
+
+
+            <div class="todo-stat">
+
+                <span>
+                    Completed
+                </span>
+
+                <strong id="completedCount">
+                    0
+                </strong>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             ADD TASK
+             ================================================= -->
+
+        <form
+            class="task-form"
+            id="taskForm"
+        >
+
+            <input
+                type="text"
+                id="taskInput"
+                class="task-input"
+                placeholder="What needs to get DONE?"
+                maxlength="150"
+                autocomplete="off"
+            >
+
+            <button
+                type="submit"
+                class="add-task-btn"
+                aria-label="Add task"
+            >
+                +
+            </button>
+
+        </form>
+
+
+        <!-- =================================================
+             TASK LIST HEADING
+             ================================================= -->
+
+        <div class="task-list-heading">
+
+            <h2>
+                MY BUSINESS.
+            </h2>
+
+            <button
+                type="button"
+                class="clear-completed"
+                onclick="clearCompletedTasks()"
+            >
+                Clear completed
+            </button>
+
+        </div>
+
+
+        <!-- =================================================
+             EMPTY STATE
+             ================================================= -->
+
+        <div
+            class="empty-tasks"
+            id="emptyTasks"
+        >
+
+            <div class="empty-cherry">
+                🍒
+            </div>
+
+            <h3>
+                Nothing here yet.
+            </h3>
+
+            <p>
+                Add your first task and start getting things done.
+            </p>
+
+        </div>
+
+
+        <!-- =================================================
+             TASK LIST
+             ================================================= -->
+
+        <div id="taskList"></div>
+
+
+    </main>
+
+
+    <!-- =================================================
+         BOTTOM NAV
+         ================================================= -->
+
+    <nav class="bottom-nav">
+
+        <a href="index.html">
+            <span>⌂</span>
+            Home
+        </a>
+
+        <a href="notes.html">
+            <span>✎</span>
+            Notes
+        </a>
+
+        <a
+            href="todo.html"
+            class="active"
+        >
+            <span>✓</span>
+            To-Do
+        </a>
+
+        <a href="calendar.html">
+            <span>▣</span>
+            Calendar
+        </a>
+
+    </nav>
+
+
+    <!-- =================================================
+         SCRIPTS
+         ================================================= -->
+
+    <script src="script.js"></script>
+    <script src="todo.js"></script>
+
+</body>
+
+</html>
